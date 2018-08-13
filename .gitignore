@@ -1,0 +1,7 @@
+*.jar
+!libs/**/*.jar
+
+target/site/*
+.gradle/*
+.idea/*
+build
