@@ -2,23 +2,25 @@ package POJOs;
 
 public class User {
 
-    public int id;
+    public String id;
     public String first_name;
     public String last_name;
     public String avatar;
 
-    public User(int id, String first_name, String last_name, String avatar){
+    public User(){}
+
+    public User(String id, String first_name, String last_name, String avatar){
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.avatar = avatar;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

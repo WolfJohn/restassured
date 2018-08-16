@@ -1,7 +1,12 @@
+# java files
 *.jar
 !libs/**/*.jar
 
-target/site/*
+# output folders
+target
+build
+out
+
+# properties
 .gradle/*
 .idea/*
-build
