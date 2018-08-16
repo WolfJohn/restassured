@@ -61,6 +61,5 @@ public class TestGetListUsers {
                 body("data.first_name", containsInAnyOrder("Byron", "George", "Rachel")).and().
                 body("data.last_name", containsInAnyOrder("Edwards", "Fields", "Howell")).and().
                 body("data.avatar", hasSize(3));
-
     }
 }
