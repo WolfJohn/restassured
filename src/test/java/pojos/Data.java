@@ -1,4 +1,4 @@
-package POJOs;
+package pojos;
 
 public class Data {
     public User data;

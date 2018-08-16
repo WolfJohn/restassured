@@ -1,3 +1,5 @@
+package tests;
+
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;

@@ -1,7 +1,6 @@
-package com.java.test.rest;
+package tests;
 
-import POJOs.Data;
-import POJOs.User;
+import pojos.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static io.restassured.RestAssured.*;
@@ -9,21 +8,22 @@ import static io.restassured.RestAssured.*;
 import io.restassured.RestAssured;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import utils.PropertyReader;
 
 import java.io.IOException;
 
 public class TestWithObjectMapper {
 
     @BeforeClass
-    public static void setUp() {
-        RestAssured.baseURI = "http://reqres.in";
+    public static void setUp() throws IOException {
+        RestAssured.baseURI = PropertyReader.readProperty("baseUrl");
     }
 
     @Test
     public void testWithObjectMapperAndSimpleAssertion() throws IOException {
         ObjectMapper om = new ObjectMapper();
 
-        String res = get("/api/users/2").asString();
+        String res = get(PropertyReader.readProperty("getUserURL") + "2").asString();
 
         Data data = om.readValue(res, Data.class);
 
