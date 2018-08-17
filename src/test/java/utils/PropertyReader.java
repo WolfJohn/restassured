@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class PropertyReader {
 
-    private final static File PROPERTIES_FILE = new File(System.getProperty("user.dir") + "/src/test/java/config/config.properties");
+    private final static File PROPERTIES_FILE = new File(System.getProperty("user.dir") + "/src/test/config/config.properties");
 
     private static Properties initProperty() throws IOException {
         Properties prop = new Properties();
