@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.Cookie;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import utils.PropertyReader;
@@ -26,6 +27,7 @@ public class TestPostToRegisterAUser {
         RestAssured.baseURI = PropertyReader.readProperty("baseURL");
     }
 
+    @Ignore
     @Test
     public void testRegistration() throws IOException {
         Map<String, String> map = new HashMap<>();
