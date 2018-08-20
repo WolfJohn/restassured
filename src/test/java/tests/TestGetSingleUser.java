@@ -35,7 +35,7 @@ public class TestGetSingleUser {
     }
 
     @Test
-    public void testWithGroovyPath() throws IOException {
+    public void testWithJsonPath() throws IOException {
 
         Cookie cookie = new Cookie.Builder("__cfduid", "d40d74234c711c9be1ec5e72061bf32e51534405577").
                 setHttpOnly(true).setSecured(true).build();
@@ -46,6 +46,23 @@ public class TestGetSingleUser {
         when().
                 get(PropertyReader.readProperty("getSingleUserURL") + "2").
         then().
-                assertThat().statusCode(200).body("data.first_name", equalTo("Janet"));
+                assertThat().statusCode(200).body("data.first_name", equalTo("Janet")).extract().response();
+    }
+
+    @Test
+    public void testWithRestAssuredSerializationFeatures() throws IOException {
+
+        Cookie cookie = new Cookie.Builder("__cfduid", "d40d74234c711c9be1ec5e72061bf32e51534405577").
+                setHttpOnly(true).setSecured(true).build();
+
+        Data data = given().
+                accept(ContentType.JSON).
+                cookie(cookie).
+                when().
+                get(PropertyReader.readProperty("getSingleUserURL") + "2").
+                body().as(Data.class);
+
+        assert data.data.id.equals("2") && data.data.last_name.equals("Weaver") &&
+                data.data.first_name.equals("Janet") && data.data.avatar.equals("https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg");
     }
 }
