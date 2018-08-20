@@ -1,0 +1,13 @@
+package tests.suites;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+import tests.reqresapitests.*;
+
+@RunWith(value=Suite.class)
+@SuiteClasses({TestGetListUsers.class, TestGetSingleUser.class, TestPostForCreatingAUser.class,
+        TestPostToRegisterAUser.class, TestWithRestAssured.class})
+public class TestTheReqresAPI {
+    //
+}

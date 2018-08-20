@@ -84,10 +84,4 @@ public class PropertyReader {
 
         temporaryFile.delete();
     }
-//
-//    @Test
-//    public void test() throws IOException {
-//        setOrRewriteProperty("Mine", "NewProp");
-////        newDelete("baseURL", "van");
-//    }
 }
