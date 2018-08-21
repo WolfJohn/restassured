@@ -1,46 +1,40 @@
 package tests.reqresapitests.steps;
 
-import static io.restassured.RestAssured.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import io.restassured.specification.RequestSpecification;
-import net.serenitybdd.rest.SerenityRest;
-import pojos.reqres.Data;
+import pojos.reqres.UserData;
 import utils.PropertyReader;
 
 import java.io.IOException;
 
 public class ReqresSteps {
 
-    private Cookie cookie;
+    private UserData userData;
     private RequestSpecification spec;
-    private Data data;
+    private final Cookie COOKIE = new Cookie.Builder("__cfduid", "d40d74234c711c9be1ec5e72061bf32e51534405577").
+            setHttpOnly(true).setSecured(true).build();
 
-    public void setUp() throws IOException {
-        cookie = new Cookie.Builder("__cfduid", "d40d74234c711c9be1ec5e72061bf32e51534405577").
-                setHttpOnly(true).setSecured(true).build();
+    @Step("The id of the person is {id}")
+    public void givenSettingUpTheRequestSpecification(int id) {
+        spec = RestAssured.given().cookie(COOKIE).baseUri(PropertyReader.readProperty("baseURL")).
+                accept(ContentType.JSON).basePath(PropertyReader.readProperty("getSingleUserURL") + id);
     }
 
-
-    @Step
-    public void givenSettingUpTheRequestSpecification() throws IOException {
-        setUp();
-        spec = RestAssured.given().cookie(cookie).baseUri(PropertyReader.readProperty("baseURL")).
-                accept(ContentType.JSON).basePath(PropertyReader.readProperty("getSingleUserURL") + "2");
-    }
-
-    @Step
+    @Step("When we make a request to get the person details")
     public void whenMakingTheRequest() {
-        data = RestAssured.given().spec(spec).when().get().body().as(Data.class);
+        userData = RestAssured.given().spec(spec).when().get().body().as(UserData.class);
     }
 
-    @Step
-    public void thenTheSingleUserMustBeReturned(){
-        assert data.data.id.equals("2") && data.data.last_name.equals("Weaver") &&
-                data.data.first_name.equals("Janet") && data.data.avatar.equals("https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg");
-        System.out.println(data);
+    @Step("Then that person should be {firstName} {lastName} with id {id}")
+    public void thenTheSingleUserMustBeReturned(int id, String firstName, String lastName, String avatar) {
+        assert  userData.data.id.equals(String.valueOf(id)) &&
+                userData.data.first_name.equals(firstName) &&
+                userData.data.last_name.equals(lastName) &&
+                userData.data.avatar.equals(avatar);
+
+        System.out.println(userData);
     }
 }

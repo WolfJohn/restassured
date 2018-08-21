@@ -22,12 +22,12 @@ public class TestGetListUsers {
             setHttpOnly(true).setSecured(true).build();
 
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() {
         RestAssured.baseURI = PropertyReader.readProperty("baseURL");
     }
 
     @Test
-    public void getListOfUsersAndAssertWithObjectMapper() throws IOException {
+    public void getListOfUsersAndAssertWithObjectMapper() {
 
 
         String body =
@@ -40,14 +40,18 @@ public class TestGetListUsers {
 
         ObjectMapper om = new ObjectMapper();
 
-        UsersPage page = om.readValue(body, UsersPage.class);
-
-        assert page.page == 4 && page.per_page == 3 && page.total == 12 &&
-                page.total_pages == 4 && page.data.size() == 3;
+        try {
+            UsersPage page;
+            page = om.readValue(body, UsersPage.class);
+            assert page.page == 4 && page.per_page == 3 && page.total == 12 &&
+                    page.total_pages == 4 && page.data.size() == 3;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void getListOfUsersAndAssertWithJsonPath() throws IOException {
+    public void getListOfUsersAndAssertWithJsonPath() {
         given().
                 accept(ContentType.JSON).
                 cookie(COOKIE).

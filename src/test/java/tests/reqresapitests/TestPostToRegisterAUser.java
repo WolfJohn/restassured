@@ -22,13 +22,13 @@ public class TestPostToRegisterAUser {
             setHttpOnly(true).setSecured(true).build();
 
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() {
         RestAssured.baseURI = PropertyReader.readProperty("baseURL");
     }
 
     @Ignore
     @Test
-    public void testRegistration() throws IOException {
+    public void testRegistration() {
         Map<String, String> map = new HashMap<>();
         map.put("email", "tets@email.com");
         map.put("password", "stest1234");

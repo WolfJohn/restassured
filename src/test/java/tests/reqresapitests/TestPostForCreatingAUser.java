@@ -23,13 +23,13 @@ public class TestPostForCreatingAUser {
             setHttpOnly(true).setSecured(true).build();
 
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() {
         RestAssured.baseURI = PropertyReader.readProperty("baseURL");
     }
 
     @Ignore
     @Test
-    public void testPostForCreatingAUserAndThenCheckItWithObjectMapper() throws IOException {
+    public void testPostForCreatingAUserAndThenCheckItWithObjectMapper() {
 //        postNewUserURL
 
         Map<String, String> requestBody = new HashMap<>();

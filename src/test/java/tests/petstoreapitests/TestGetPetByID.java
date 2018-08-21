@@ -22,12 +22,12 @@ import static io.restassured.RestAssured.given;
 public class TestGetPetByID {
 
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() {
         RestAssured.baseURI= PropertyReader.readProperty("URL");
     }
 
     @Test
-    public void testPostMethod() throws IOException {
+    public void testPostMethod() {
         ObjectMapper om = new ObjectMapper();
 
         Pet pet = new Pet(Long.parseLong(PropertyReader.readProperty("petID")),

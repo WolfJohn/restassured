@@ -1,9 +1,8 @@
 package utils;
 
-import org.junit.Test;
 import java.io.*;
 import java.nio.file.Files;
-import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -11,18 +10,22 @@ public class PropertyReader {
 
     private final static File PROPERTIES_FILE = new File(System.getProperty("user.dir") + "/src/test/config/config.properties");
 
-    private static Properties initProperty() throws IOException {
+    private static Properties initProperty()  {
         Properties prop = new Properties();
-        FileInputStream inputStream = new FileInputStream(PROPERTIES_FILE);
+        try {
+            FileInputStream inputStream = new FileInputStream(PROPERTIES_FILE);
 
-        prop.load(inputStream);
+            prop.load(inputStream);
 
-        inputStream.close();
+            inputStream.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
 
         return prop;
     }
 
-    public static String readProperty(String propertyName) throws IOException {
+    public static String readProperty(String propertyName) {
         Properties prop = initProperty();
 
         String property = prop.getProperty(propertyName);
@@ -30,58 +33,76 @@ public class PropertyReader {
         return property;
     }
 
-    public static String setProperty(String propertyName, String propertyValue) throws IOException {
-        RandomAccessFile writer = new RandomAccessFile(PROPERTIES_FILE, "rw");
-        String newProperty = new StringBuilder().append("\n").append(propertyName).append("=").append(propertyValue).toString();
+    public static String setProperty(String propertyName, String propertyValue) {
+        RandomAccessFile writer;
+        try {
+            writer = new RandomAccessFile(PROPERTIES_FILE, "rw");
+            String newProperty = new StringBuilder().append("\n").append(propertyName).append("=").append(propertyValue).toString();
 
-        writer.seek(PROPERTIES_FILE.length());
-        writer.write(newProperty.getBytes());
+            writer.seek(PROPERTIES_FILE.length());
+            writer.write(newProperty.getBytes());
 
-        writer.close();
-        return readProperty(propertyName);
-    }
-
-    public void setOrRewriteProperty(String propertyName, String propertyValue) throws IOException {
-        List<String> lines = Files.lines(PROPERTIES_FILE.toPath()).filter(l ->
-                !(l.trim().contains(propertyName + "=") || l.trim().contains(propertyName))
-        ).collect(Collectors.toList());
-
-        FileOutputStream outputStream = new FileOutputStream(PROPERTIES_FILE);
-        outputStream.write(("").getBytes());
-
-        lines.forEach(l -> {
-            String[] keyValue = l.trim().split("=");
-
-            try {
-                setProperty(keyValue[0], keyValue[1]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        setProperty(propertyName, propertyValue);
-        outputStream.close();
-    }
-
-    @Deprecated
-    private static void removePropertyFromFile(String propertyName) throws IOException {
-        File temporaryFile = new File("temporary.properties");
-        temporaryFile.createNewFile();
-
-        BufferedReader reader = new BufferedReader(new FileReader(PROPERTIES_FILE));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(temporaryFile));
-
-        for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-            System.out.println(line);
-
-            if (line.trim().contains(propertyName + "=") || line.trim().contains(propertyName)) continue;
-
-            writer.write(line + System.getProperty("line.separator"));
+            writer.close();
+            return readProperty(propertyName);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        throw new IllegalStateException("Property was not set");
+    }
 
-        reader.close();
-        writer.close();
+    public static void setOrRewriteProperty(String propertyName, String propertyValue) {
+        Map<String, String> lines = null;
+        try {
+            lines = Files.
+                    lines(PROPERTIES_FILE.toPath()).
+                    filter(l -> !l.isEmpty() && l.trim().split("=").length == 2).
+                    collect(Collectors.toMap((l -> l.trim().split("=")[0]), (l -> l.trim().split("=")[1])));
 
-        temporaryFile.delete();
+            lines.put(propertyName, propertyValue);
+
+            FileOutputStream outputStream = new FileOutputStream(PROPERTIES_FILE);
+            outputStream.write(0);
+
+            lines.forEach((k, v) -> setProperty(k, v));
+
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removePropertyFromFile(String propertyName) {
+
+        Map<String, String> lines = readPropertiesFromFile();
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(PROPERTIES_FILE);
+
+            outputStream.write(0);
+
+            lines.forEach((k, v) -> {
+
+                if (k.equals(propertyName)) {
+                } else setProperty(k, v);
+
+            });
+
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Map<String, String> readPropertiesFromFile() {
+        try {
+            return Files.
+                    lines(PROPERTIES_FILE.toPath()).
+                    filter(l -> !l.isEmpty() && l.trim().split("=").length == 2).
+                    collect(Collectors.toMap((l -> l.trim().split("=")[0]), (l -> l.trim().split("=")[1])));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("Could not get properties from the file");
     }
 }

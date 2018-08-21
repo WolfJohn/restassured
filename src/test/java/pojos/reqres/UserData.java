@@ -1,25 +1,25 @@
 package pojos.reqres;
 
-public class Data {
+public class UserData {
     public User data;
 
-    public Data(){}
+    public UserData(){}
 
-    public Data(User data) {
+    public UserData(User data) {
         this.data = data;
     }
 
-    public User getData() {
+    public User getUserData() {
         return data;
     }
 
-    public void setData(User data) {
+    public void setUserData(User data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        return "Data{" +
+        return "UserData{" +
                 "data=" + data +
                 '}';
     }

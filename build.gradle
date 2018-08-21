@@ -8,9 +8,15 @@ buildscript {
 }
 
 apply plugin: 'io.qameta.allure'
-
 apply plugin: 'java'
 apply plugin: 'idea'
+
+group 'org.test.java.restassured'
+version '1.0-SNAPSHOT'
+
+test{
+    ignoreFailures = true
+}
 
 allure {
     version = '2.5.0'
@@ -18,14 +24,9 @@ allure {
     aspectjweaver = true
 }
 
-repositories {
-    mavenCentral()
-}
-
 sourceCompatibility = 1.8
 
-group 'org.test.java.restassured'
-version '1.0-SNAPSHOT'
+repositories {mavenCentral()}
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -34,3 +35,7 @@ dependencies {
     testCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.9.36'
     testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.6'
 }
+
+//configurations {
+//    all*.exclude group:'org.slf4j', module:'slf4j-api'
+//}
