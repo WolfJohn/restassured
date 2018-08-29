@@ -9,7 +9,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import utils.PropertyReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

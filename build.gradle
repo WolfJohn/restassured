@@ -1,21 +1,33 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath "io.qameta.allure:allure-gradle:2.5"
+        classpath "net.serenity-bdd:serenity-gradle-plugin:1.9.36"
     }
 }
 
+//apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: 'io.qameta.allure'
 apply plugin: 'java'
 apply plugin: 'idea'
+apply from: "getWebDriver.gradle"
 
 group 'org.test.java.restassured'
 version '1.0-SNAPSHOT'
 
+compileTestJava{
+    options.compilerArgs += '-proc:none'
+}
+
 test{
     ignoreFailures = true
+    systemProperty "cucumber.options", System.getProperty("cucumber.options")
+    systemProperties System.getProperties()
+    outputs.upToDateWhen{false}
+    testLogging.showStandardStreams=true
 }
 
 allure {
@@ -29,13 +41,14 @@ sourceCompatibility = 1.8
 repositories {mavenCentral()}
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile "org.slf4j:slf4j-api:1.8.0-beta2"
+    testCompile "org.slf4j:slf4j-simple:1.8.0-beta2"
+    testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     testCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.9.36'
     testCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.9.36'
+    testCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version: '1.9.14'
+    testCompile group: 'net.serenity-bdd', name: 'serenity-screenplay', version: '1.9.36'
     testCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.9.36'
     testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.6'
+    testCompile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.6'
 }
-
-//configurations {
-//    all*.exclude group:'org.slf4j', module:'slf4j-api'
-//}

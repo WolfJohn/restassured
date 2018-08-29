@@ -22,11 +22,11 @@ public class TestPostPet {
 
     @BeforeClass
     public static void setUp() {
-        RestAssured.baseURI= PropertyReader.readProperty("URL");
+        RestAssured.baseURI = PropertyReader.readProperty("URL");
     }
 
     @Test
-    public void testPostMethod()  {
+    public void testPostMethod() {
         ObjectMapper om = new ObjectMapper();
 
         Pet pet = new Pet(0L,
@@ -47,10 +47,9 @@ public class TestPostPet {
 
             Pet postPet = om.readValue(postPetString, Pet.class);
 
-
-        System.out.println(postPet);
-        PropertyReader.setOrRewriteProperty("petID", "" + postPet.getId());
-        } catch (IOException e){
+            System.out.println(postPet);
+            PropertyReader.setOrRewriteProperty("petID", "" + postPet.getId());
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

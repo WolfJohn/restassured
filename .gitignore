@@ -10,3 +10,9 @@ out
 # properties
 .gradle/*
 .idea/*
+
+#allure
+.allure
+
+#drivers
+drivers

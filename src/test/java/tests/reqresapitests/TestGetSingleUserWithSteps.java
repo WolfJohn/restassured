@@ -5,7 +5,6 @@ import net.thucydides.core.annotations.Steps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import tests.reqresapitests.steps.ReqresSteps;
-import java.io.IOException;
 
 @RunWith(SerenityRunner.class)
 public class TestGetSingleUserWithSteps {

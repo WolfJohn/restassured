@@ -1,4 +1,4 @@
-package tests.reqresapitests.steps;
+package resources.features.steps.serenity;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -8,7 +8,7 @@ import net.thucydides.core.annotations.Step;
 import pojos.reqres.UserData;
 import utils.PropertyReader;
 
-public class ReqresSteps {
+public class SerenitySteps {
 
     private UserData userData;
     private RequestSpecification spec;
@@ -27,11 +27,10 @@ public class ReqresSteps {
     }
 
     @Step("Then that person should be {firstName} {lastName} with id {id}")
-    public void thenTheSingleUserMustBeReturned(int id, String firstName, String lastName, String avatar) {
+    public void thenTheSingleUserMustBeReturned(String firstName, String lastName, int id) {
         assert  userData.data.id.equals(String.valueOf(id)) &&
                 userData.data.first_name.equals(firstName) &&
-                userData.data.last_name.equals(lastName) &&
-                userData.data.avatar.equals(avatar);
+                userData.data.last_name.equals(lastName);
 
         System.out.println(userData);
     }
