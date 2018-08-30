@@ -58,7 +58,7 @@ public class TestGetListUsers {
                 accept(ContentType.JSON).
                 cookie(COOKIE).
         when().
-                get(PropertyReader.readProperty("getListUsersURL") + "4").
+                get(PropertyReader.readProperty("getListUsersURL") + "=4").
         then().body("page", equalTo(4)).and().
                 body("per_page", equalTo(3)).and().
                 body("total", equalTo(12)).and().
