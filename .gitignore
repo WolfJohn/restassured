@@ -5,4 +5,4 @@ build/
 out/
 target
 restassured.iml
-src/test/resources
+src/test/resources/drivers

@@ -1,6 +1,7 @@
 task downloadDriver(dependsOn: compileJava) {
-    def folder = "src/test/resources/drivers"
-    def file = new File(folder + File.separator + "chromedriver_win32.zip")
+    def resourcesFolder = "src/test/resources"
+    def driversFolder = "${resourcesFolder}/drivers"
+    def file = new File(driversFolder + File.separator + "chromedriver_win32.zip")
 
     onlyIf {
         !file.exists()
@@ -18,8 +19,13 @@ task downloadDriver(dependsOn: compileJava) {
     }
 
     doFirst {
-        def dir = new File(folder)
-        if (!dir.exists()) dir.mkdir()
+        def driversDir = new File(driversFolder)
+        if (!driversDir.exists()) driversDir.mkdir()
+    }
+
+    doFirst {
+        def resourcesDir = new File(resourcesFolder)
+        if (!resourcesDir.exists()) resourcesDir.mkdir()
     }
 }
 
