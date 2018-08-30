@@ -1,4 +1,4 @@
-package tests;
+package tests.reqresapitests;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -9,7 +9,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import utils.PropertyReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,13 +22,13 @@ public class TestPostForCreatingAUser {
             setHttpOnly(true).setSecured(true).build();
 
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() {
         RestAssured.baseURI = PropertyReader.readProperty("baseURL");
     }
 
     @Ignore
     @Test
-    public void testPostForCreatingAUserAndThenCheckItWithObjectMapper() throws IOException {
+    public void testPostForCreatingAUserAndThenCheckItWithObjectMapper() {
 //        postNewUserURL
 
         Map<String, String> requestBody = new HashMap<>();

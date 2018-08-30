@@ -1,4 +1,6 @@
-package pojos;
+package pojos.reqres;
+
+import pojos.reqres.User;
 
 import java.util.List;
 

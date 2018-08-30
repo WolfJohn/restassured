@@ -1,4 +1,4 @@
-package petstoretest;
+package tests.petstoreapitests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
@@ -21,12 +21,12 @@ import static io.restassured.RestAssured.*;
 public class TestPostPet {
 
     @BeforeClass
-    public static void setUp() throws IOException {
-        RestAssured.baseURI= PropertyReader.readProperty("URL");
+    public static void setUp() {
+        RestAssured.baseURI = PropertyReader.readProperty("URL");
     }
 
     @Test
-    public void testPostMethod() throws IOException {
+    public void testPostMethod() {
         ObjectMapper om = new ObjectMapper();
 
         Pet pet = new Pet(0L,
@@ -36,17 +36,21 @@ public class TestPostPet {
                 new ArrayList<>(Arrays.asList(new Tag(0, "TagName1"), new Tag(1, "TagName2"))),
                 "available");
 
-        String json = om.writeValueAsString(pet);
+        try {
+            String json = om.writeValueAsString(pet);
 
-        String postPetString = given().
-                body(json).header("Content-Type", "application/json").
-                when().
-                post(PropertyReader.readProperty("postPetURL")).
-                body().asString();
+            String postPetString = given().
+                    body(json).header("Content-Type", "application/json").
+                    when().
+                    post(PropertyReader.readProperty("postPetURL")).
+                    body().asString();
 
-        Pet postPet = om.readValue(postPetString, Pet.class);
+            Pet postPet = om.readValue(postPetString, Pet.class);
 
-        System.out.println(postPet);
-        PropertyReader.setProperty("petID", "" + postPet.getId());
+            System.out.println(postPet);
+            PropertyReader.setOrRewriteProperty("petID", "" + postPet.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

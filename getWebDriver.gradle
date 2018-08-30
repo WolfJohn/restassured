@@ -1,0 +1,59 @@
+task downloadDriver(dependsOn: compileJava) {
+    def folder = "src/test/resources/drivers"
+    def file = new File(folder + File.separator + "chromedriver_win32.zip")
+
+    onlyIf {
+        !file.exists()
+    }
+
+    doFirst {
+        new URL("http://chromedriver.storage.googleapis.com/2.41/chromedriver_win32.zip").withInputStream { inputStream ->
+            file.withOutputStream { OutputStream outputStream ->
+                outputStream << inputStream
+                inputStream.close()
+                outputStream.close()
+            }
+        }
+        print "\n\n-----DRIVER SUCCESSFULLY DOWNLOADED-----\n\n"
+    }
+
+    doFirst {
+        def dir = new File(folder)
+        if (!dir.exists()) dir.mkdir()
+    }
+}
+
+task unzipDriver(dependsOn: downloadDriver) {
+
+    def driverLocation = "src/test/resources/drivers/chromedriver.exe"
+    def zipFileLocation = "src/test/resources/drivers/chromedriver_win32.zip"
+
+    onlyIf {
+        !new File(driverLocation).exists()
+    }
+
+    doFirst {
+        def fileInputStream = new FileInputStream(zipFileLocation)
+        def zipInputStream = new java.util.zip.ZipInputStream(fileInputStream)
+
+        def buffer = new byte[2048]
+
+        for (def zipEntry = zipInputStream.getNextEntry(); zipEntry != null; zipEntry = zipInputStream.getNextEntry()) {
+            def file = new File(driverLocation)
+
+            def outputSteam = new FileOutputStream(file)
+            int count
+            while ((count = zipInputStream.read(buffer)) > 0) {
+                outputSteam.write(buffer, 0, count)
+            }
+            outputSteam.close()
+            fileInputStream.close()
+        }
+        print "\n\n-----DRIVER SUCCESSFULLY UNZIPPED-----\n\n"
+    }
+}
+
+classes.dependsOn.add(unzipDriver)
+
+//link for downloading firefox driver
+//https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-win64.zip

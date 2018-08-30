@@ -1,12 +1,10 @@
-package tests;
+package tests.reqresapitests;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
 
 @RunWith(SerenityRunner.class)
 public class TestWithRestAssured {

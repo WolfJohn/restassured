@@ -1,18 +1,20 @@
-package tests;
+package tests.reqresapitests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Cookie;
 import net.serenitybdd.junit.runners.SerenityRunner;
-import pojos.UsersPage;
-import utils.PropertyReader;
-import java.io.IOException;
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import pojos.reqres.UsersPage;
+import utils.PropertyReader;
+
+import java.io.IOException;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
 
 @RunWith(SerenityRunner.class)
@@ -22,12 +24,12 @@ public class TestGetListUsers {
             setHttpOnly(true).setSecured(true).build();
 
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() {
         RestAssured.baseURI = PropertyReader.readProperty("baseURL");
     }
 
     @Test
-    public void getListOfUsersAndAssertWithObjectMapper() throws IOException {
+    public void getListOfUsersAndAssertWithObjectMapper() {
 
 
         String body =
@@ -35,24 +37,28 @@ public class TestGetListUsers {
                 accept(ContentType.JSON).
                 cookie(COOKIE).
         when().
-                get(PropertyReader.readProperty("getListUsersURL") + "4").
+                get(PropertyReader.readProperty("getListUsersURL") + "=4").
         body().asString();
 
         ObjectMapper om = new ObjectMapper();
 
-        UsersPage page = om.readValue(body, UsersPage.class);
-
-        assert page.page == 4 && page.per_page == 3 && page.total == 12 &&
-                page.total_pages == 4 && page.data.size() == 3;
+        try {
+            UsersPage page;
+            page = om.readValue(body, UsersPage.class);
+            assert page.page == 4 && page.per_page == 3 && page.total == 12 &&
+                    page.total_pages == 4 && page.data.size() == 3;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void getListOfUsersAndAssertWithJsonPath() throws IOException {
+    public void getListOfUsersAndAssertWithJsonPath() {
         given().
                 accept(ContentType.JSON).
                 cookie(COOKIE).
         when().
-                get(PropertyReader.readProperty("getListUsersURL") + "4").
+                get(PropertyReader.readProperty("getListUsersURL") + "=4").
         then().body("page", equalTo(4)).and().
                 body("per_page", equalTo(3)).and().
                 body("total", equalTo(12)).and().

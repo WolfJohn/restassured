@@ -1,4 +1,4 @@
-package pojos;
+package pojos.reqres;
 
 public class User {
 
