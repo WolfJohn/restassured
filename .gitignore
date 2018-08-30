@@ -12,7 +12,8 @@ out
 .idea/*
 
 #allure
-.allure
+.*
+
 
 #drivers
 drivers
