@@ -4,3 +4,5 @@
 build/
 out/
 target
+restassured.iml
+src/test/resources
