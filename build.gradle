@@ -9,7 +9,6 @@ buildscript {
     }
 }
 
-//apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: 'io.qameta.allure'
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -20,6 +19,7 @@ version '1.0-SNAPSHOT'
 
 compileTestJava{
     options.compilerArgs += '-proc:none'
+    options.encoding='UTF-8'
 }
 
 test{
@@ -34,6 +34,7 @@ allure {
     version = '2.5.0'
     autoconfigure = true
     aspectjweaver = true
+//    downloadLink = "https://github.com/allure-framework/allure2/releases/download/2.7.0/allure-2.7.0.zip"
 }
 
 sourceCompatibility = 1.8
