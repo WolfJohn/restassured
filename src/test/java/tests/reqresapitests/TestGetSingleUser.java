@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
-
 import java.io.IOException;
 
 @RunWith(SerenityRunner.class)
@@ -26,7 +25,6 @@ public class TestGetSingleUser {
     @Test
     public void testWithObjectMapperAndSimpleAssertion() {
         ObjectMapper om = new ObjectMapper();
-
         String res = get(PropertyReader.readProperty("getSingleUserURL") + "2").asString();
 
         UserData data = null;

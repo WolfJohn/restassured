@@ -28,7 +28,6 @@ public class GoogleTranslateTests {
     @Steps
     GoogleTranslateSteps steps;
 
-//    @Ignore
     @Test
     public void verifyIfTheTranslatorWorksCorrectly(){
         steps.openGoogleTranslatePage().populateTheTextField("edit").performTheSearch().compareResult("редактировать");
